@@ -6,6 +6,10 @@ const mongodbErrorHandler = require('mongoose-mongodb-errors');
 const passportLocalMongoose = require('passport-local-mongoose');
 
 const userSchema = new Schema({
+  created:{
+    date: Date,
+    default: Date.now
+  },
   email:{
     type: String,
     unique: true,
@@ -13,7 +17,11 @@ const userSchema = new Schema({
     lowercase: true,
     validate: [validator.isEmail, 'Invalid Email Address'],
     required: "Please provide an email!"
-  }
+  },
+  forms:[{
+    type: Schema.Types.ObjectID,
+    ref: "Forms"
+  }]
 });
 
 userSchema.plugin(passportLocalMongoose, { usernameField: 'email' }); //Allows method .register()
